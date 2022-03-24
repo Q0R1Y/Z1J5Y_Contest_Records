@@ -32,42 +32,51 @@ int main(){
    for(int i = 1; i <= n; ++i){
       int a = read();
       ll val = a-i;
-      if(i == 1){
+      if(l_heap.empty()){
          l_heap.push(val);
          l_sum += val;
-         printf("0");
+         l_sum%=mod;
+         printf("0 ");
          continue;
       }
-      if(val > l_heap.top()) {
+      else if(val > l_heap.top()) {
          r_heap.push(val);
          r_sum += val;
+         r_sum%=mod;
+            
       }
       else {
          l_heap.push(val);
          l_sum += val;
+         l_sum%=mod;
       }
       while(fabs(l_heap.size()-r_heap.size()) > 1){
          if(l_heap.size() > r_heap.size()){
             r_heap.push(l_heap.top());
             l_sum -= l_heap.top();
             r_sum += l_heap.top();
+            r_sum%=mod;
+            l_sum%=mod;
             l_heap.pop();
          } 
          else {
             l_heap.push(r_heap.top());
             r_sum -= r_heap.top();
             l_sum += r_heap.top();
+            r_sum%=mod;
+            l_sum%=mod;
             r_heap.pop();
          }
       } 
       if(i&1){
-         ll ans;
-         if(l_heap.size() > r_heap.size()) ans = r_sum-l_sum+l_heap.top();
-         else ans = r_sum-r_heap.top()-l_sum;
-         printf(" %lld", ans%mod);
+         val=(r_sum-l_sum)%mod;
+         val+=(l_heap.size() > r_heap.size())?l_heap.top():-r_heap.top();
+         // printf(" %lld", ans%mod);
+         std::cout<<val%mod<<" ";
       }
       else{
-         printf(" %lld", (r_sum-l_sum)%mod);
+         // printf(" %lld", (r_sum-l_sum)%mod);
+         std::cout<<(r_sum-l_sum)%mod<<" ";
       }
       //cout << l_sum << " " << r_sum << endl;
    }
